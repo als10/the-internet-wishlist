@@ -16,6 +16,11 @@ export default class LoginResolver {
     return this.loginService.login(input, context);
   }
 
+  @Query(() => String, { nullable: true })
+  async refreshAccessToken(@Ctx() context: Context) {
+    return this.loginService.refreshAccessToken(context);
+  }
+
   @Mutation(() => Boolean)
   logout(@Ctx() context: Context) {
     console.log(`logout endpoint called`);

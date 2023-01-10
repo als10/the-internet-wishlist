@@ -15,7 +15,7 @@ import {
   },
 })
 export class Project {
-  readonly _id: BaseProject['id'];
+  readonly _id: BaseProject['_id'];
 
   @prop({ required: true, ref: () => User })
   creator: Ref<User>;
@@ -48,7 +48,7 @@ export class Project {
   },
 })
 export class Submission {
-  readonly _id: BaseSubmission['id'];
+  readonly _id: BaseSubmission['_id'];
 
   @prop({ required: true, ref: () => User })
   creator: Ref<User>;

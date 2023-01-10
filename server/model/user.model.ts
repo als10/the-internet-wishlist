@@ -8,7 +8,7 @@ import {
 } from '@typegoose/typegoose';
 import type { ReturnModelType, Ref } from '@typegoose/typegoose';
 import type { AsQueryMethod } from '@typegoose/typegoose/lib/types';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Project } from './project.model';
 import { User as BaseUser } from '../../types';
 
@@ -46,7 +46,7 @@ export interface QueryHelpers {
   },
 })
 export class User {
-  readonly _id: BaseUser['id'];
+  readonly _id: BaseUser['_id'];
 
   @prop({ default: true, select: false })
   verified: boolean;

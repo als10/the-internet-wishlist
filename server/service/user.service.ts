@@ -74,7 +74,7 @@ export default class UserService {
   }
 
   async addStarredProject(id: User['_id'], projectId: Project['_id']) {
-    console.log(`Adding saved project ${projectId} to user ${id}...`);
+    console.log(`Adding starred project ${projectId} to user ${id}...`);
     return UserModel.findByIdAndUpdate(
       id,
       { $push: { starredProjects: projectId } },
@@ -83,7 +83,7 @@ export default class UserService {
   }
 
   async removeStarredProject(id: User['_id'], projectId: Project['_id']) {
-    console.log(`Removing saved project ${projectId} from user ${id}...`);
+    console.log(`Removing starred project ${projectId} from user ${id}...`);
     return UserModel.findByIdAndUpdate(
       id,
       { $pull: { starredProjects: projectId } },

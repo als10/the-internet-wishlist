@@ -6,7 +6,7 @@ import { UserData } from './user.schema';
 @ObjectType()
 export class ProjectCardData {
   @Field(() => String)
-  readonly _id: Project['id'];
+  readonly _id: Project['_id'];
 
   @Field(() => String)
   title: Project['title'];
@@ -42,7 +42,7 @@ export class ProjectData extends ProjectCardData {
 @ObjectType()
 export class SubmissionData {
   @Field(() => String)
-  readonly _id: Submission['id'];
+  readonly _id: Submission['_id'];
 
   @Field(() => UserData)
   creator: Submission['creator'];

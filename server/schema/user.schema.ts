@@ -15,7 +15,7 @@ const MAX_PASSWORD_LENGTH = 50;
 @ObjectType()
 export class UserData {
   @Field(() => String)
-  readonly _id: User['id'];
+  readonly _id: User['_id'];
 
   @Field(() => String)
   username: User['username'];

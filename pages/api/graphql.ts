@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import createApolloServer from '../../server/util/apollo';
+import createApolloServer from '../../server/util/apollo.server';
 import { NextApiRequest, NextApiResponse } from 'next';
 import cors from '../../server/util/cors';
 import { connectMongo } from '../../server/util/mongo';

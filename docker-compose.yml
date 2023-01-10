@@ -1,14 +1,25 @@
 version: '3.8'
 services:
+  nextjs:
+    image: the-internet-wishlist-dev
+    container_name: nextjs
+    build: .
+    env_file:
+      - .env.development.local
+    ports:
+      - '${PORT}:3000'
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+      - redis
   mongo:
     image: mongo
-    container_name: mongodb
+    container_name: mongo
     ports:
-      - '6000:27017'
+      - '${MONGO_PORT}:27017'
     volumes:
-      - mongodb:/data/db
-    env_file:
-      - ./.env
+      - mongo:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
@@ -17,9 +28,9 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - '6379:6379'
+      - '${REDIS_PORT}:6379'
     volumes:
       - redis:/data
 volumes:
   redis:
-  mongodb:
+  mongo:

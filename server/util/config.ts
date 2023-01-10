@@ -2,20 +2,7 @@ import { OptionsType } from 'cookies-next/lib/types';
 
 export const isInProduction = process.env.NODE_ENV === 'production';
 
-// function chooseValueByNodeEnv<T>(development: T, production: T): T {
-//   return isInProduction ? production : development;
-// }
-
-// const dbUsername = process.env.DB_USERNAME;
-// const dbPassword = process.env.DB_PASSWORD;
-// const dbName = chooseValueByNodeEnv(
-//   process.env.DB_NAME_DEVELOPMENT,
-//   process.env.DB_NAME_PRODUCTION,
-// );
-
-// export const DB_URI = `mongodb+srv://${dbUsername}:${dbPassword}@cluster0.5gxwiyz.mongodb.net/${dbName}?retryWrites=true&w=majority`;
-
-export const DB_URI = process.env.MONGODB_LOCAL_URI as string;
+export const DB_URI = process.env.MONGO_URI as string;
 
 const ACCESS_TOKEN_PRIVATE_KEY = process.env.ACCESS_TOKEN_PRIVATE_KEY as string;
 const ACCESS_TOKEN_PUBLIC_KEY = process.env.ACCESS_TOKEN_PUBLIC_KEY as string;
@@ -46,11 +33,11 @@ export const PRIVATE_KEY = (
   }
 };
 
-export const PORT = Number(process.env.PORT);
+export const REDIS_URL = process.env.REDIS_URL as string;
 
 // Cookie options
-export const accessTokenExpiresIn = 15;
-export const refreshTokenExpiresIn = 60;
+export const accessTokenExpiresIn = 60 * 4;
+export const refreshTokenExpiresIn = 60 * 24 * 7;
 
 const cookieOptions: OptionsType = {
   httpOnly: true,

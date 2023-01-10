@@ -10,8 +10,6 @@ export default async function deserializeUser(
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<User> {
-  console.log('deserializeUser called');
-
   let access_token;
   if (
     req.headers.authorization &&
@@ -33,8 +31,6 @@ export default async function deserializeUser(
   if (!session) throw new ForbiddenError('Session has expired');
 
   const userId = JSON.parse(session)._id;
-  console.log(`User ID: ${userId}`);
-
   const user = await UserModel.findById(userId).lean();
   if (!user) {
     throw new ForbiddenError(

@@ -1,6 +1,6 @@
-import { ApolloError } from 'apollo-server-errors';
-import bcrypt from 'bcrypt';
-import { signJwt } from '../util/jwt';
+import { ApolloError, ForbiddenError } from 'apollo-server-errors';
+import bcrypt from 'bcryptjs';
+import { signJwt, verifyJwt } from '../util/jwt';
 import { UserModel } from '../model';
 import { LoginInput } from '../schema/login.schema';
 import { User } from '../model/user.model';
@@ -65,6 +65,47 @@ export default class LoginService {
 
     console.log('Login successful!');
     return user;
+  }
+
+  async refreshAccessToken({ req, res }: Context) {
+    const { refresh_token } = req.cookies;
+    if (!refresh_token)
+      throw new ForbiddenError('Could not refresh access token');
+
+    const decoded = verifyJwt<{ userId: string }>(
+      refresh_token,
+      'refreshTokenPublicKey',
+    );
+    if (!decoded) throw new ForbiddenError('Could not refresh access token');
+
+    const session = await redisClient.get(decoded.userId);
+    if (!session) throw new ForbiddenError('User session has expired');
+
+    const userId = JSON.parse(session)._id;
+    const user = await UserModel.findById(userId).lean();
+    if (!user) {
+      throw new ForbiddenError('Could not refresh access token');
+    }
+
+    const access_token = signJwt(
+      { userId: user._id },
+      'accessTokenPrivateKey',
+      { expiresIn: `${accessTokenExpiresIn}m` },
+    );
+
+    setCookie('access_token', access_token, {
+      req,
+      res,
+      ...accessTokenCookieOptions,
+    });
+    setCookie('logged_in', 'true', {
+      req,
+      res,
+      ...accessTokenCookieOptions,
+      httpOnly: false,
+    });
+
+    return access_token;
   }
 
   async logout({ req, res, user }: Context) {
